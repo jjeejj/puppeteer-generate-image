@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-generate-image",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "利用 puppeteer 对指定的模版生成图片",
   "main": "index.js",
   "scripts": {
@@ -16,5 +16,11 @@
   "dependencies": {
     "ejs": "^2.6.1",
     "puppeteer": "^1.7.0"
+  },
+  "homepage": "https://github.com/jjeejj/puppeteer-generate-image",
+  "bugs": "https://github.com/jjeejj/puppeteer-generate-image/issues",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:jjeejj/puppeteer-generate-image.git"
   }
 }
