@@ -9,6 +9,10 @@
 ### 使用方法
 
 ```
+npm install puppeteer-generate-image
+```
+
+```
 const PGI = require('puppeteer-generate-image')
 
 /**
