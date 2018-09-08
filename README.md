@@ -16,6 +16,14 @@ const PGI = require('puppeteer-generate-image')
  * options 参数 
  * @param options = {
  *  device : 生成图片使用的设备大小
+ *  viewport: {
+ *    width <number> page width in pixels.
+ *    height <number> page height in pixels.
+ *    deviceScaleFactor <number> Specify device scale factor (can be thought of as dpr). Defaults to 1.
+ *    isMobile <boolean> Whether the meta viewport tag is taken into account. Defaults to false.
+ *    hasTouch<boolean> Specifies if viewport supports touch events. Defaults to false
+ *    isLandscape <boolean> Specifies if viewport is in landscape mode. Defaults to false.
+ *  }
  *  type: Specify screenshot type, can be either jpeg or png. Defaults to 'png'.
  *  quality: The quality of the image, between 0-100. Not applicable to png images
  *  fullPage: When true, takes a screenshot of the full scrollable page. Defaults to false
@@ -26,7 +34,6 @@ const PGI = require('puppeteer-generate-image')
  *  launch：{} 启动 puppeteer 生成 browser 的参数 {}
  * }
  *／
-
 const pgi = new PGI(options); //options 参数
 
 //执行 init 方法
@@ -43,3 +50,6 @@ let value = await pgi.generateImage(htmlTemplateString,data);
 //销毁释放资源
 await pgi.destroy();
 ```
+>执行 new 创建实例的时候 参数 `viewport` 和  `device` 起作用的只有一个用一个 ，如果 `viewport`有值，优先使用 `viewport`
+>执行 `init` 方法后可以多次生成图片
+>若生成图片任务完成后,一定要执行 `destroy` 方法 销毁资源

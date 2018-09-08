@@ -1,15 +1,22 @@
 /**
- * 
+ * 利用 puppeteer 对制定的模版生成图片
  */
 const puppeteer = require('puppeteer');
 const devices = require('puppeteer/DeviceDescriptors');
 const ejs = require('ejs');
 
 class PGI {
-
     /**
      * @param options = {
      *  device : 生成图片使用的设备大小
+     *  viewport: {
+     *    width <number> page width in pixels.
+     *    height <number> page height in pixels.
+     *    deviceScaleFactor <number> Specify device scale factor (can be thought of as dpr). Defaults to 1.
+     *    isMobile <boolean> Whether the meta viewport tag is taken into account. Defaults to false.
+     *    hasTouch<boolean> Specifies if viewport supports touch events. Defaults to false
+     *    isLandscape <boolean> Specifies if viewport is in landscape mode. Defaults to false.
+     *  }
      *  type: Specify screenshot type, can be either jpeg or png. Defaults to 'png'.
      *  quality: The quality of the image, between 0-100. Not applicable to png images
      *  fullPage: When true, takes a screenshot of the full scrollable page. Defaults to false
@@ -23,40 +30,48 @@ class PGI {
     constructor(options = {}){
         let defaultOptions = {
             device: 'iPhone 6 Plus',
+            viewport: null, // viewport 和  device 用一个 ，如果 viewport有值，优先使用 viewport
             type: 'png',
             fullPage: false,
             omitBackground: false,
             encoding: 'binary',
             path: '',
             clip: null,
-            launch: {}
+            launch: {            
+                args: ['--no-sandbox'],
+                ignoreHTTPSErrors: true,
+                // headless:false,
+                handleSIGINT: true,
+                timeout: 300 * 1000
+            }
         };
         this.options = Object.assign({},defaultOptions,options);
         this.browser = null;
         this.page = null;
     }
-
     /**
      * 内部方法,初始化需要的资源 init
-     * 
      * 主要是生成 browser 和 page 对象
      */
     async init(){
         this.browser = await puppeteer.launch(this.options.launch);
         this.page = await this.browser.newPage();
-        await this.page.emulate(devices[this.options.device]);
+        if(this.options.viewport){
+            await this.page.setViewport(this.options.viewport);
+        }else{
+            await this.page.emulate(devices[this.options.device]);
+        };
     }
-
     /**
      * 执行生成图片
      * htmlTemplateString: html 字符串模版
      * data : 需要填充的数据
-     * 
      *  return buffer or a base64 string depending on the value of encoding
      */
     async generateImage(htmlTemplateString,data){
         try{
             let html = ejs.render(htmlTemplateString, data, {});
+            console.log('html',html);
             // console.log('this.page',this.page);
             await this.page.setContent(html);
 
@@ -79,7 +94,6 @@ class PGI {
             this.destroy();
         };
     }
-
     /**
      *  释放资源 destroy
      *  主要是 销毁 page 和 browser
