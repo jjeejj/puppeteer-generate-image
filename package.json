@@ -1,6 +1,6 @@
 {
   "name": "puppeteer-generate-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "利用 puppeteer 对指定的模版生成图片",
   "main": "index.js",
   "scripts": {
