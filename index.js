@@ -4,6 +4,8 @@
 const puppeteer = require('puppeteer');
 const devices = require('puppeteer/DeviceDescriptors');
 const ejs = require('ejs');
+const fs = require('fs');
+const path = require('path');
 
 class PGI {
     /**
@@ -56,6 +58,7 @@ class PGI {
     async init(){
         this.browser = await puppeteer.launch(this.options.launch);
         this.page = await this.browser.newPage();
+        await this.page.setJavaScriptEnabled(true);
         if(this.options.viewport){
             await this.page.setViewport(this.options.viewport);
         }else{
@@ -64,34 +67,47 @@ class PGI {
     }
     /**
      * 执行生成图片
-     * htmlTemplateString: html 字符串模版
+     * htmlTemplatePath: 模版路径,需要绝对地址
      * data : 需要填充的数据
      *  return buffer or a base64 string depending on the value of encoding
      */
-    async generateImage(htmlTemplateString,data){
+    async generateImage(htmlTemplatePath,data){
         try{
-            let html = ejs.render(htmlTemplateString, data, {});
-            console.log('html',html);
-            // console.log('this.page',this.page);
-            await this.page.setContent(html);
+            if(path.isAbsolute(htmlTemplatePath) && fs.existsSync(htmlTemplatePath)){
+                let htmlTemplateExtname = path.extname(htmlTemplatePath).replace('.',''),
+                    htmlTemplateDirname = path.dirname(htmlTemplatePath),html = '',
+                    htmlTemplateContent = fs.readFileSync(htmlTemplatePath,'utf8');
+                if(htmlTemplateExtname == 'ejs'){
+                    html = ejs.render(htmlTemplateContent, data, {});
+                };
+                let tempHtmlFilePath = path.join(htmlTemplateDirname,`${Date.now()}.html`);
+                fs.writeFileSync(tempHtmlFilePath,html);
+                // await this.page.setContent(html);
+                await this.page.goto(`file:${tempHtmlFilePath}`);
 
-            let screenshotParams = {
-                type: this.options.type,
-                quality: this.options.quality,
-                fullPage:  this.options.fullPage,
-                omitBackground: this.options.omitBackground,
-                encoding: this.options.encoding
+                let screenshotParams = {
+                    type: this.options.type,
+                    quality: this.options.quality,
+                    fullPage:  this.options.fullPage,
+                    omitBackground: this.options.omitBackground,
+                    encoding: this.options.encoding
+                };
+                if(this.options.path){
+                    screenshotParams.path = this.options.path
+                };
+                if(this.options.clip){
+                    screenshotParams.clip = this.options.clip
+                };
+                fs.unlinkSync(tempHtmlFilePath);// 删除生成的临时问价
+                return this.page.screenshot(screenshotParams);
+
+            }else{
+                // await this.destroy();
+                throw new Error(`请传入一个存在的绝对路径的 模版文件: ${htmlTemplatePath}`);
             };
-            if(this.options.path){
-                screenshotParams.path = this.options.path
-            };
-            if(this.options.clip){
-                screenshotParams.clip = this.options.clip
-            };
-            return this.page.screenshot(screenshotParams);
         }catch(err){
-            throw('generateImage err',err);
-            this.destroy();
+            await this.destroy();
+            throw err;
         };
     }
     /**
@@ -99,8 +115,12 @@ class PGI {
      *  主要是 销毁 page 和 browser
      */
     async destroy(){
-        await this.page.close();
-        await this.browser.close();
+        try{
+            await this.page.close();
+            await this.browser.close();
+        }catch(err){
+            throw('destroy err',err);
+        };
     }
 };
 
