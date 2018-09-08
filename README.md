@@ -1,6 +1,6 @@
 # puppeteer-generate-image
 
-利用 puppeteer 对制定的模版生成图片
+利用 puppeteer 对指定的模版生成图片
 
 ### 利用模版引擎填充渲染数据,现支持的模版引擎列表:
 
