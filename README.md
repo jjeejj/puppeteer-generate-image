@@ -51,5 +51,7 @@ let value = await pgi.generateImage(htmlTemplateString,data);
 await pgi.destroy();
 ```
 >执行 new 创建实例的时候 参数 `viewport` 和  `device` 起作用的只有一个用一个 ，如果 `viewport`有值，优先使用 `viewport`
+
 >执行 `init` 方法后可以多次生成图片
+
 >若生成图片任务完成后,一定要执行 `destroy` 方法 销毁资源
