@@ -77,6 +77,9 @@ class PGI {
                 let htmlTemplateExtname = path.extname(htmlTemplatePath).replace('.',''),
                     htmlTemplateDirname = path.dirname(htmlTemplatePath),html = '',
                     htmlTemplateContent = fs.readFileSync(htmlTemplatePath,'utf8');
+                if(htmlTemplateExtname == 'html' || htmlTemplateExtname == 'htm'){
+                    html = htmlTemplateContent;
+                };
                 if(htmlTemplateExtname == 'ejs'){
                     html = ejs.render(htmlTemplateContent, data, {});
                 };

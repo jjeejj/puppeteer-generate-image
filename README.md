@@ -4,6 +4,7 @@
 
 ### 利用模版引擎填充渲染数据,现支持的模版引擎列表:
 
+- html 原生的 `HTML`, 进行数据渲染,直接写在 `HTML` 源码中 
 - [ejs](https://github.com/mde/ejs)
 
 ### 使用方法
@@ -59,3 +60,5 @@ await pgi.destroy();
 >执行 `init` 方法后可以多次生成图片
 
 >若生成图片任务完成后,一定要执行 `destroy` 方法 销毁资源
+
+很多案例参考 [https://github.com/jjeejj/Generate-Image-Templates](Generate-Image-Templates)
