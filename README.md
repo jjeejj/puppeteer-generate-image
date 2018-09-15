@@ -55,7 +55,7 @@ let value = await pgi.generateImage(htmlTemplatePath,data);
 //销毁释放资源
 await pgi.destroy();
 ```
->执行 new 创建实例的时候 参数 `viewport` 和  `device` 起作用的只有一个用一个 ，如果 `viewport`有值，优先使用 `viewport`,若都没有指定,则是默认打开的效果 对于  `device` 请参考  [DeviceDescriptors](https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js)
+>执行 new 创建实例的时候 参数 `viewport` 和  `device` 起作用的只有一个，如果 `viewport`有值，优先使用 `viewport`,若都没有指定,则是默认打开的效果 对于  `device` 的值 请参考  [DeviceDescriptors](https://github.com/GoogleChrome/puppeteer/blob/master/DeviceDescriptors.js)
 
 >对于需要滚动截取长图,需要传入参数 `fullPage:true` 现默认是 `false`
 
