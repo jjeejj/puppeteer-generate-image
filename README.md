@@ -46,7 +46,7 @@ await pgi.init();
 
 /**
  * 执行生成图片的方法
- * htmlTemplatePath: 模版路径,需要绝对地址 ，现在只支持 ejs 
+ * htmlTemplatePath: 模版路径,需要绝对地址
  * data: 需要填充的数据
  * 该方法 可以返回 buffer or a base64 根据 实例化 new 传入的 encoding 确定的
  */
