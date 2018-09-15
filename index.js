@@ -10,7 +10,7 @@ const path = require('path');
 class PGI {
     /**
      * @param options = {
-     *  device : 生成图片使用的设备大小
+     *  device : 生成图片使用的设备大小 值有 iPhone 6 Plus | iPhone SE | iPad | Galaxy S5 landscape
      *  viewport: {
      *    width <number> page width in pixels.
      *    height <number> page height in pixels.
@@ -31,7 +31,7 @@ class PGI {
      */
     constructor(options = {}){
         let defaultOptions = {
-            device: 'iPhone 6 Plus',
+            device: '',
             viewport: null, // viewport 和  device 用一个 ，如果 viewport有值，优先使用 viewport
             type: 'png',
             fullPage: false,
@@ -61,7 +61,7 @@ class PGI {
         await this.page.setJavaScriptEnabled(true);
         if(this.options.viewport){
             await this.page.setViewport(this.options.viewport);
-        }else{
+        }else if(this.options.device){
             await this.page.emulate(devices[this.options.device]);
         };
     }
@@ -101,7 +101,7 @@ class PGI {
                 if(this.options.clip){
                     screenshotParams.clip = this.options.clip
                 };
-                fs.unlinkSync(tempHtmlFilePath);// 删除生成的临时问价
+                fs.unlinkSync(tempHtmlFilePath);// 删除生成的临时文件
                 return this.page.screenshot(screenshotParams);
 
             }else{
