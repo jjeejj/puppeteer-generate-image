@@ -61,4 +61,13 @@ await pgi.destroy();
 
 >若生成图片任务完成后,一定要执行 `destroy` 方法 销毁资源
 
-更多案例参考 [https://github.com/jjeejj/Generate-Image-Templates](https://github.com/jjeejj/Generate-Image-Templates)
+###  参考案例
+
+在 `example` 文件夹下:
+
+`index.ejs`: 是模版文件
+`index.js` : 是调用该模块的业务文件
+`code.js`: 是模版中使用的图片
+`test.png`: 是生成的图片
+
+>更多案例参考 [https://github.com/jjeejj/Generate-Image-Templates](https://github.com/jjeejj/Generate-Image-Templates)
