@@ -61,4 +61,4 @@ await pgi.destroy();
 
 >若生成图片任务完成后,一定要执行 `destroy` 方法 销毁资源
 
-很多案例参考 [https://github.com/jjeejj/Generate-Image-Templates](Generate-Image-Templates)
+很多案例参考 [https://github.com/jjeejj/Generate-Image-Templates](https://github.com/jjeejj/Generate-Image-Templates)
